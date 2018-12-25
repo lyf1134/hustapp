@@ -9,16 +9,16 @@ function initVM(data) {
 	var vm = new Vue({
 		el: '#vm',
 		data: {
-			blogs: data.blogs,
+			lectures: data.items,
 			page: data.page
 		},
 		methods: {
-			edit_blog: function (blog) {
-				location.assign('/manage/blogs/edit?id=' + blog.id);
+			edit_lecture: function (lecture) {
+				location.assign('/manage/lectures/edit?id=' + lecture.id);
 			},
-			delete_blog: function (blog) {
-				if (confirm('确认要删除“' + blog.name + '”？删除后不可恢复！')) {
-					postJSON('/api/blogs/' + blog.id + '/delete', function (err, r) {
+			delete_lecture: function (lecture) {
+				if (confirm('确认要删除“' + lecture.name + '”？删除后不可恢复！')) {
+					postJSON('/api/lectures/' + lecture.id + '/delete', function (err, r) {
 						if (err) {
 							return alert(err.message || err.error || err);
 						}
@@ -31,7 +31,7 @@ function initVM(data) {
 	$('#vm').show();
 }
 $(function() {
-	getJSON('/api/blogs', {
+	getJSON('/api/lectures', {
 		page: {{ page_index }}
 	}, function (err, results) {
 		if (err) {
@@ -51,7 +51,12 @@ $(function() {
 		<div class="uk-panel uk-panel-box">
 			<ul class="uk-breadcrumb">
 				<li><a href="/manage/comments">评论</a></li>
-				<li class="uk-active"><span>日志</span></li>
+				<li><a href="/manage/questions">反馈</a></li>
+				<li><a href="/manage/jwcs">教务处</a></li>
+				<li><a href="/manage/zphs">招聘会</a></li>
+				<li><a href="/manage/inters">留学信息</a></li>
+				<li class="uk-active"><span>讲座</span></li>
+				<li><a href="/manage/infos">情报</a></li>
 				<li><a href="/manage/users">用户</a></li>
 			</ul>
 		</div>
@@ -65,31 +70,31 @@ $(function() {
 	</div>
 
 	<div id="vm" class="uk-width-1-1">
-		<a href="/manage/blogs/create" class="uk-button uk-button-primary"><i class="uk-icon-plus"></i> 新日志</a>
+		<a href="/manage/lectures/create" class="uk-button uk-button-primary"><i class="uk-icon-plus"></i> 新日志</a>
 
 		<table class="uk-table uk-table-hover">
 			<thead>
 				<tr>
 					<th class="uk-width-5-10">标题 / 摘要</th>
-					<th class="uk-width-2-10">作者</th>
+					<th class="uk-width-2-10">原网址</th>
 					<th class="uk-width-2-10">创建时间</th>
 					<th class="uk-width-1-10">操作</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-repeat="blog: blogs" >
+				<tr v-repeat="lecture: lectures" >
 					<td>
-						<a target="_blank" v-attr="href: '/blog/'+blog.id" v-text="blog.name"></a>
+						<a target="_blank" v-attr="href:'/lecture/'+lecture.id" v-text="lecture.title"></a>
 					</td>
 					<td>
-						<a target="_blank" v-attr="href: '/user/'+blog.user_id" v-text="blog.user_name"></a>
+						<a target="_blank" v-attr="href: lecture.url" v-text="lecture.url"></a>
 					</td>
 					<td>
-						<span v-text="blog.created_at.toDateTime()"></span>
+						<span v-text="lecture.created_at.toDateTime()"></span>
 					</td>
 					<td>
-						<a href="#0" v-on="click: edit_blog(blog)"><i class="uk-icon-edit"></i>
-						<a href="#0" v-on="click: delete_blog(blog)"><i class="uk-icon-trash-o"></i>
+						<a href="#0" v-on="click: edit_lecture(lecture)"><i class="uk-icon-edit"></i>
+						<a href="#0" v-on="click: delete_lecture(lecture)"><i class="uk-icon-trash-o"></i>
 					</td>
 				</tr>
 			</tbody>

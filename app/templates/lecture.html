@@ -1,11 +1,11 @@
 {% extends '__base__.html' %}
 
-{% block title %}{{ blog.name }}{% endblock %}
+{% block title %}{{ lecture.name }}{% endblock %}
 
 {% block beforehead %}
 
 <script>
-var comment_url = '/api/blogs/{{ blog.id }}/comments';
+var comment_url = '/api/lectures/{{ lecture.id }}/comments';
 $(function () {
     var $form = $('#form-comment');
     $form.submit(function (e) {
@@ -31,9 +31,11 @@ $(function () {
 
     <div class="uk-width-medium-3-4">
         <article class="uk-article">
-            <h2>{{ blog.name }}</h2>
-            <p class="uk-article-meta">发表于{{ blog.created_at|datetime }}</p>
-            <p>{{ blog.html_content|safe }}</p>
+            <h2>{{ lecture.title }}</h2>
+            <p class="uk-article-meta">发表于{{ lecture.created_at|datetime }}</p>
+			<p>举办时间：{{ lecture.tim }}</p>
+			<p>地点：{{ lecture.place }}</p>
+            <p>{{ lecture.html_content|safe }}</p>
         </article>
 
         <hr class="uk-article-divider">
@@ -48,7 +50,7 @@ $(function () {
                 <article class="uk-comment">
                     <header class="uk-comment-header">
                         <img class="uk-comment-avatar uk-border-circle" width="50" height="50" src="{{ comment.user_image }}">
-                        <h4 class="uk-comment-title">{{ comment.user_name }} {% if comment.user_id==blog.user_id %}(作者){% endif %}</h4>
+                        <h4 class="uk-comment-title">{{ comment.user_name }} {% if comment.user_id==lecture.user_id %}(作者){% endif %}</h4>
                         <p class="uk-comment-meta">{{ comment.created_at|datetime }}</p>
                     </header>
                     <div class="uk-comment-body">
@@ -88,8 +90,8 @@ $(function () {
     <div class="uk-width-medium-1-4">
         <div class="uk-panel uk-panel-box">
             <div class="uk-text-center">
-                <img class="uk-border-circle" width="120" height="120" src="{{ blog.user_image }}">
-                <h3>{{ blog.user_name }}</h3>
+                <img class="uk-border-circle" width="120" height="120" src="{{ lecture.user_image }}">
+                <h3>{{ lecture.user_name }}</h3>
             </div>
         </div>
         <div class="uk-panel uk-panel-header">

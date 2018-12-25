@@ -38,7 +38,8 @@ def get_jwc_text():
 			a=li_item.find('a')
 			temp_text+=(a.get_text()+',')
 			temp_text+=(addr+a['href'])
-			class_content+=("{'type':'url','content':"+temp_text+"},")
+			class_content+=("{\"type\":\"url\",\"content\":\""+temp_text+"\"},")
+		temp_text=''
 	###################文本信息#################
 		table33=bf.find('table',attrs={"id": "table33"}) 
 		p=table33.find_all('p')
@@ -49,6 +50,7 @@ def get_jwc_text():
 			if '<sign_start>'  in p_item.get_text():		#去除最后面的干扰项
 				continue
 			temp_text+=(p_item.get_text()+'\n')
-		class_content+=("{'type':'text','content':"+temp_text+"}")
+		class_content+=("{\"type\":\"text\",\"content\":\""+temp_text+"\"}]")
 		mysql_list.append(mysql( title=class_title,tim=class_tim, place=class_place,url=class_url,content=class_content))
+		mysql_list.reverse()
 	return mysql_list

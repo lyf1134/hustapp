@@ -1,11 +1,12 @@
 import time,uuid
 import pymysql
+from config import configs
 
 def next_id():
 	return '%015d%s000' % (int(time.time() * 1000), uuid.uuid4().hex)
 def creat_pool():
 	global __pool
-	__pool = pymysql.connect("localhost", "root", "password", "test")
+	__pool = pymysql.connect("localhost", "root", "password", configs['db']['db'])
 class mysql():
 	def __init__(self, title,tim, place, url,content):
 		self.title = title					#标题

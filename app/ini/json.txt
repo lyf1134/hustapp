@@ -1,0 +1,10 @@
+{"id":"1","title":"hello","time":"2018年11月10日","place":"东九D404","url":"http://www.hust.edu.cn","created_at":"1541602370.8577356"
+,"content":[{'type':'text','content':'abcdefg.......'},{'type':'table','content':'<table ></table>'},{'type':'url','content':'1.doc,http://www.hust.edu.cn'}]
+}(zphs库，即招聘信息 time举办时间，place举办地点created_at 创建时间)
+
+
+{"code": 0, "user": {"id": "0015431439039333d67be07b5ed4c0e8470f5a3d4a023ac000", "school_num": "U200011111", 
+"passwd": "a8b1a3a09f83978ab34cd2cfa8825fa089948fc4", "admin": 0, "name": "test", "image": "http://www.gravatar.com/avatar/3a1dd96d3fdc3c9ccc6a2edba46afd9e?d=mm&s=120",
+ "message": "#001543397133813321250f0cfb144d584c97ca2376721b3000#00154350179927091106206e7d24fb59051a4f5795ac739000#001543501922736274b5fc82d984136be77aad72d80748f000#00154350209518516f244398543483fbc9ec21e1e2f55f6000",
+ "content": "", "created_at": 1543143903.93323}}
+(用户信息admin权限 content个人介绍)

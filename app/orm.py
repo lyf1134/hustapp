@@ -193,7 +193,16 @@ class Model(dict, metaclass=ModelMetaclass):
 		if len(rs) == 0:
 			return None
 		return cls(**rs[0])
-
+	
+	@classmethod
+	async def finded(cls, sel,args=None):#cls.finded('sel') 
+		' find number by select and where. '
+		sql = ['select %s  from `%s`' % (sel, cls.__table__)]
+		rs = await select(' '.join(sql), args, 1)
+		if len(rs) == 0:
+			return None
+		return rs[0]
+	
 	async def save(self):
 		args = list(map(self.getValueOrDefault, self.__fields__))
 		args.append(self.getValueOrDefault(self.__primary_key__))

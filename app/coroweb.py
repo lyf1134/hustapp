@@ -123,7 +123,7 @@ class RequestHandler(object):
 			r = await self._func(**kw)
 			return r
 		except APIError as e:
-			return dict(error=e.error, data=e.data, message=e.message)
+			return dict(code=e.code,error=e.error, data=e.data, message=e.message)
 
 def add_static(app):
 	path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')

@@ -1,0 +1,116 @@
+{% extends '__base__.html' %}
+
+{% block title %}编辑日志{% endblock %}
+
+{% block beforehead %}
+
+<script>
+var
+	ID = '{{ id }}',
+	action = '{{ action }}';
+function initVM(info) {
+	var vm = new Vue({
+		el: '#vm',
+		data: info,
+		methods: {
+			submit: function (event) {
+				event.preventDefault();
+				var $form = $('#vm').find('form');
+				var select=document.getElementById('_type_')
+				$form.postJSON(action, {
+                    title: this.title.trim(),
+					_type_: select.value,
+                    content: this.content.trim()
+                }, function (err, r) {
+					if (err) {
+						$form.showFormError(err);
+					}
+					else {
+						return location.assign('/info/' + r.id);
+					}
+				});
+			}
+		}
+	});
+	$('#vm').show();
+}
+$(function () {
+	if (ID) {
+		getJSON('/api/infos/' + ID+'/edit', function (err, info) {
+			if (err) {
+				return fatal(err);
+			}
+			$('#loading').hide();
+			initVM(info.info);
+		});
+	}
+	else {
+		$('#loading').hide();
+		initVM({
+			title: '',
+			_type_: '',
+			content: ''
+		});
+	}
+});
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+	<div class="uk-width-1-1 uk-margin-bottom">
+		<div class="uk-panel uk-panel-box">
+			<ul class="uk-breadcrumb">
+				<li><a href="/manage/comments">评论</a></li>
+				<li><a href="/manage/questions">反馈</a></li>
+				<li><a href="/manage/jwcs">教务处</a></li>
+				<li><a href="/manage/zphs">招聘会</a></li>
+				<li><a href="/manage/inters">留学信息</a></li>
+				<li><a href="/manage/lectures">讲座</a></li>
+				<li><a href="/manage/infos">情报</a></li>
+				<li><a href="/manage/users">用户</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div id="error" class="uk-width-1-1">
+	</div>
+
+	<div id="loading" class="uk-width-1-1 uk-text-center">
+		<span><i class="uk-icon-spinner uk-icon-medium uk-icon-spin"></i> 正在加载...</span>
+	</div>
+
+	<div id="vm" class="uk-width-2-3">
+		<form v-on="submit: submit" class="uk-form uk-form-stacked">
+			<div class="uk-alert uk-alert-danger uk-hidden"></div>
+			<div class="uk-form-row">
+				<label class="uk-form-label">标题:</label>
+				<div class="uk-form-controls">
+					<input v-model="title" name="title" type="text" placeholder="标题" class="uk-width-1-1">
+				</div>
+			</div>
+			<div class="uk-form-row">
+				<label class="uk-form-label">类型:</label>
+				<select v-model="_type_" id="_type_" >
+					<option value ="study" selected>学习</option>
+					<option value ="life">生活</option>
+					<option value="club">社团</option>
+					<option value="need">需求</option>
+				</select>
+			</div>
+			<div class="uk-form-row">
+				<label class="uk-form-label">内容:</label>
+				<span>格式为[{"type":"text","content":"XX"}] xx中不能有英文""</span>
+				<div class="uk-form-controls">
+					<textarea v-model="content" rows="16" name="content" placeholder="内容" class="uk-width-1-1" style="resize:none;"></textarea>
+				</div>
+			</div>
+			<div class="uk-form-row">
+				<button type="submit" class="uk-button uk-button-primary"><i class="uk-icon-save"></i> 保存</button>
+				<a href="/manage/infos" class="uk-button"><i class="uk-icon-times"></i> 取消</a>
+			</div>
+		</form>
+	</div>
+
+{% endblock %}

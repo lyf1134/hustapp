@@ -1,0 +1,18 @@
+正常 {"code":0,"XXX":{........}}
+(可能有"page": {"item_count": 4, "page_size": 10, "page_count": 1, "page_index": 1, "offset": 0, "limit": 10, "has_next": false, "has_previous": false})
+XXX为返回的库的名称
+{........}=json的数据=
+{"id":"0213021021030213020","title":"hello","time":"2018年11月10日","place":"东九D404","url":"http://www.hust.edu.cn","created_at":"1541602370.8577356"
+,"content":[{'type':'text','content':'abcdefg.......'},{'type':'table','content':'<table ></table>'},{'type':'url','content':'1.doc,http://www.hust.edu.cn'}]
+}( time举办时间，place举办地点created_at 创建时间)
+{"id": "001535605147168254c31839118434e8da423981fb11d9f000", "student_num": "U200000000", "passwd": "85d09a1db19d7431ca557a21c3355bd883fa2774", "admin": 0, 
+"name": "li", "image": "http://www.gravatar.com/avatar/4adcca49b3b1e5a08ac202f5d5a9e688?d=mm&s=120", "created_at": 1535605147.16821,"content":"啦啦啦"}
+(用户信息admin权限 content个人介绍)
+
+error
+{"code":X,"error":"AAAAA","data":"AAAAA","message":"AAAAA"}（message可能为''）
+X为错误代码，error是代码解释，data是出错数据名 "message"是介绍
+1数值无效
+2notfound
+3没登陆/无权限
+4其他

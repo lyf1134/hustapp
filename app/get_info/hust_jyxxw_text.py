@@ -6,7 +6,7 @@ from msql import mysql
 #############输入（jyxxw目录）对象列表，返回mysql对象列表#######
 def get_jyxxw_text(id):
 	if id == 1:
-		class_list = hust_jyxxw.get_zhaopinghui_list()
+		class_list = hust_jyxxw.get_zhaopinhui_list()
 	elif id == 2:
 		class_list = hust_jyxxw.get_yk_zhaopinhui_list()
 	elif id == 3:
@@ -55,7 +55,7 @@ def get_jyxxw_text(id):
 		try:
 			table=body[0].find_all('table')
 			for table_item in table:
-				class_content+=("{'type':'table','content':"+str(table_item)+"},")				#输出表格信息
+				class_content+=("{\"type\":\"table\",\"content\":\""+str(table_item).replace('\"','\'')+"\"},")				#输出表格信息
 				table_p.extend(table_item.find_all('p'))								#获取table里的p标签，元素为p标签
 		except:
 			pass
@@ -73,7 +73,8 @@ def get_jyxxw_text(id):
 					print_point=count
 				continue
 			text+=(p_tag_item.get_text()+'\n')	
-		class_content+=("{'type':'text','content':"+text+"}")
+		class_content+=("{\"type\":\"text\",\"content\":\""+text+"\"}")
 		class_content+=(']')
 		mysql_list.append(mysql( title=class_title,tim=class_tim, place=class_place,url=class_url,content=class_content))
+		mysql_list.reverse()
 	return mysql_list

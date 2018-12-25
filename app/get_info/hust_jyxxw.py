@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 
 
 ########招聘会############
-class zhaopinghui():
+class zhaopinhui():
 	def __init__(self,title,web_addr,date,host_addr):
 		self.title=title			#公司名称
 		self.web_addr=web_addr		#网络地址
@@ -18,7 +18,7 @@ class zhaopinghui():
 				self.host_addr)
 ########函数解释###########
 ########自动获取招聘会目录上信息，并以列表形式返回########
-def get_zhaopinghui_list():	
+'''def get_zhaopinghui_list():	
 	#招聘会
 	end_addr=''
 	zhaopinghui_list=[]
@@ -48,8 +48,8 @@ def get_zhaopinghui_list():
 		html=requests.get(url=target)
 		bf=BeautifulSoup(html.text,features='lxml')
 		get=bf.find_all('table')
-		'''for item in get:
-			data.append(item.find_all('a'))'''
+		#for item in get:
+		#	data.append(item.find_all('a'))
 		tr=(get[1].find_all('tr'))
 		tr=tr[1:]
 		for tr_item in tr:
@@ -60,13 +60,55 @@ def get_zhaopinghui_list():
 			class_date=td[1].find('span').string
 			class_host_addr=td[2].find('span').string
 			class_title=td[0].find('a').string
-			zhaopinghui_list.append(zhaopinghui(web_addr=class_web_addr,date=class_date,host_addr=class_host_addr,title=class_title))
+			zhaopinghui_list.append(zhaopinhui(web_addr=class_web_addr,date=class_date,host_addr=class_host_addr,title=class_title))
 			#zhaopinghui_list[-1].show()
 			#print('\n\n\n')
 		i+=1
 		if target==end_addr:									#跳出页面
 			break
 	return zhaopinghui_list
+'''
+def get_zhaopinhui_list():
+	#招聘会
+	zhaopinhui_list=[]
+	information=[]
+	data=[]
+	#组成目录页面
+	target_1='http://job.hust.edu.cn/searchJob_'
+	target_2='.jspx?type=0&fbsj=0'
+	#首页
+	first_page='http://job.hust.edu.cn/searchJob_1.jspx?type=0&fbsj=0'
+	#拼装链接
+	addr='http://job.hust.edu.cn/'	
+	addr_1='http://job.hust.edu.cn'					
+	#print(html.text)
+	i=1
+	while 1:
+		target=target_1+str(i)+target_2
+		#print(target)					每一分页面的链接
+		html=requests.get(url=target)
+		bf=BeautifulSoup(html.text,features='lxml')
+		get=bf.find_all('table')
+		#for item in get:
+		#	data.append(item.find_all('a'))
+		tr=(get[1].find_all('tr'))
+		tr=tr[1:]
+		for tr_item in tr:
+			td=tr_item.find_all('td')
+			a=tr_item.find('a')
+			class_web_addr=addr_1+a['href']			#原网页链接
+			count=0
+			class_date=td[1].find('span').string
+			class_host_addr=td[2].find('span').string
+			class_title=td[0].find('a').string
+			zhaopinhui_list.append(zhaopinhui(web_addr=class_web_addr,date=class_date,host_addr=class_host_addr,title=class_title))
+			#zhaopinghui_list[-1].show()
+			#print('\n\n\n')
+		i+=1
+		if i==2:					        			#跳出页面
+			break
+	return zhaopinhui_list
+
 
 ########医科招聘会
 class yk_zhaopinhui():

@@ -1,4 +1,4 @@
-import logging; logging.basicConfig(level=logging.INFO)
+import logging; logging.basicConfig(level=logging.INFO,filename='./log.log')
 
 import asyncio, os, json, time
 from datetime import datetime
@@ -11,7 +11,7 @@ from coroweb import add_routes, add_static
 from config import configs
 from handlers import cookietouser, COOKIE_NAME
 
-def init_jinja2(app, **kw):
+def init_jinja2(app, **kw):#渲染html
 	logging.info('init jinja2...')
 	options = dict(
 		autoescape = kw.get('autoescape', True),
@@ -51,7 +51,7 @@ async def data_factory(app, handler):
 		return (await handler(request))
 	return parse_data
 
-async def auth_factory(app, handler):
+async def auth_factory(app, handler):#检查当前用户
 	async def auth(request):
 		logging.info('check user: %s %s' % (request.method, request.path))
 		request.__user__ = None
@@ -59,7 +59,7 @@ async def auth_factory(app, handler):
 		if cookie_str:
 			user = await cookietouser(cookie_str)
 			if user:
-				logging.info('set current user: %s' % user.email)
+				logging.info('set current user: %s' % user.school_num)
 				request.__user__ = user
 		if request.path.startswith('/manage/') and (request.__user__ is None or not request.__user__.admin):
 			return web.HTTPFound('/signin')
@@ -105,7 +105,7 @@ async def response_factory(app, handler):
 		return resp
 	return response
 
-def datetime_filter(t):
+def datetime_filter(t):#时间
 	delta = int(time.time() - t)
 	if delta < 60:
 		return u'1分钟前'
@@ -126,7 +126,7 @@ async def init(loop):
 	init_jinja2(app, filters=dict(datetime=datetime_filter))
 	add_routes(app, 'handlers')
 	add_static(app)
-	srv = await loop.create_server(app.make_handler(), configs['ip'], 80)
+	srv = await loop.create_server(app.make_handler(), configs['ip'], 80)#监听80端口
 	logging.info('server started at http://'+configs['ip']+':80')
 	return srv
 

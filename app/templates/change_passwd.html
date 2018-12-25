@@ -1,6 +1,6 @@
 {% extends '__base__.html' %}
 
-{% block title %}注册{% endblock %}
+{% block title %}修改密码{% endblock %}
 
 {% block beforehead %}
 
@@ -13,8 +13,7 @@ $(function () {
     var vm = new Vue({
         el: '#vm',
         data: {
-            name: '',
-            school_num: '',
+            oldpassword:'',
             password1: '',
             password2: ''
         },
@@ -22,23 +21,25 @@ $(function () {
             submit: function (event) {
                 event.preventDefault();
                 var $form = $('#vm');
-                if (! this.name.trim()) {
-                    return $form.showFormError('请输入名字');
-                }
+                //if (! this.name.trim()) {
+                //    return $form.showFormError('请输入名字');
+                //}
                 //if (! validateEmail(this.school_num.trim())) {
                     //return $form.showFormError('请输入正确的Email地址');
                 //}
+				if (this.oldpassword.length = 0) {
+                    return $form.showFormError('请输入原密码');
+                }
                 if (this.password1.length < 6) {
                     return $form.showFormError('口令长度至少为6个字符');
                 }
                 if (this.password1 !== this.password2) {
                     return $form.showFormError('两次输入的口令不一致');
                 }
-                var school_num = this.school_num.trim();
-                $form.postJSON('/api/users', {
-                    name: this.name.trim(),
-                    school_num: school_num,
-                    passwd: CryptoJS.SHA1(school_num + ':' + this.password1).toString()
+                var school_num='{{user.school_num}}';
+                $form.postJSON('/api/users/{{user.id}}', {           
+                    oldpasswd: CryptoJS.SHA1(school_num + ':' + this.oldpassword).toString(),
+                    newpasswd: CryptoJS.SHA1(school_num + ':' + this.password1).toString()
                 }, function (err, r) {
                     if (err) {
                         return $form.showFormError(err);
@@ -57,35 +58,30 @@ $(function () {
 {% block content %}
 
     <div class="uk-width-2-3">
-        <h1>欢迎注册！</h1>
+        <h1>修改密码！</h1>
         <form id="vm" v-on="submit: submit" class="uk-form uk-form-stacked">
             <div class="uk-alert uk-alert-danger uk-hidden"></div>
             <div class="uk-form-row">
-                <label class="uk-form-label">名字:</label>
+                <label class="uk-form-label">原密码:</label>
                 <div class="uk-form-controls">
-                    <input v-model="name" type="text" maxlength="50" placeholder="名字" class="uk-width-1-1">
+                    <input v-model="oldpassword" type="password" maxlength="50" placeholder="原密码" class="uk-width-1-1">
                 </div>
             </div>
             <div class="uk-form-row">
-                <label class="uk-form-label">学号:</label>
+                <label class="uk-form-label">新密码:</label>
                 <div class="uk-form-controls">
-                    <input v-model="school_num" type="text" maxlength="50" placeholder="U200000000" class="uk-width-1-1">
+                    <input v-model="password1" type="password" maxlength="50" placeholder="新密码" class="uk-width-1-1">
                 </div>
             </div>
             <div class="uk-form-row">
-                <label class="uk-form-label">输入口令:</label>
+                <label class="uk-form-label">重复新密码:</label>
                 <div class="uk-form-controls">
-                    <input v-model="password1" type="password" maxlength="50" placeholder="输入口令" class="uk-width-1-1">
+                    <input v-model="password2" type="password" maxlength="50" placeholder="重复新密码" class="uk-width-1-1">
                 </div>
             </div>
             <div class="uk-form-row">
-                <label class="uk-form-label">重复口令:</label>
-                <div class="uk-form-controls">
-                    <input v-model="password2" type="password" maxlength="50" placeholder="重复口令" class="uk-width-1-1">
-                </div>
-            </div>
-            <div class="uk-form-row">
-                <button type="submit" class="uk-button uk-button-primary"><i class="uk-icon-user"></i> 注册</button>
+                <button type="submit" class="uk-button uk-button-primary"><i class="uk-icon-user"></i> 修改密码</button>
+				<a href="/user/{{user.id}}" class="uk-button"><i class="uk-icon-times"></i> 取消</a>
             </div>
         </form>
     </div>

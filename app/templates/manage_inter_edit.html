@@ -8,10 +8,10 @@
 var
 	ID = '{{ id }}',
 	action = '{{ action }}';
-function initVM(blog) {
+function initVM(inter) {
 	var vm = new Vue({
 		el: '#vm',
-		data: blog,
+		data: inter,
 		methods: {
 			submit: function (event) {
 				event.preventDefault();
@@ -21,7 +21,7 @@ function initVM(blog) {
 						$form.showFormError(err);
 					}
 					else {
-						return location.assign('/blog/' + r.id);
+						return location.assign('/inter/' + r.id);
 					}
 				});
 			}
@@ -31,19 +31,21 @@ function initVM(blog) {
 }
 $(function () {
 	if (ID) {
-		getJSON('/api/blogs/' + ID, function (err, blog) {
+		getJSON('/api/inters/' + ID+'/edit', function (err, inter) {
 			if (err) {
 				return fatal(err);
 			}
 			$('#loading').hide();
-			initVM(blog);
+			initVM(inter.inter);
 		});
 	}
 	else {
 		$('#loading').hide();
 		initVM({
-			name: '',
-			summary: '',
+			title: '',
+			tim:'',
+			place:'',
+			url:'',
 			content: ''
 		});
 	}
@@ -58,7 +60,12 @@ $(function () {
 		<div class="uk-panel uk-panel-box">
 			<ul class="uk-breadcrumb">
 				<li><a href="/manage/comments">评论</a></li>
-				<li><a href="/manage/blogs">日志</a></li>
+				<li><a href="/manage/questions">反馈</a></li>
+				<li><a href="/manage/jwcs">教务处</a></li>
+				<li><a href="/manage/zphs">招聘会</a></li>
+				<li><a href="/manage/inters">留学信息</a></li>
+				<li><a href="/manage/lectures">讲座</a></li>
+				<li><a href="/manage/infos">情报</a></li>
 				<li><a href="/manage/users">用户</a></li>
 			</ul>
 		</div>
@@ -77,13 +84,25 @@ $(function () {
 			<div class="uk-form-row">
 				<label class="uk-form-label">标题:</label>
 				<div class="uk-form-controls">
-					<input v-model="name" name="name" type="text" placeholder="标题" class="uk-width-1-1">
+					<input v-model="title" name="title" type="text" placeholder="标题" class="uk-width-1-1">
 				</div>
 			</div>
 			<div class="uk-form-row">
-				<label class="uk-form-label">摘要:</label>
+				<label class="uk-form-label">举办时间:</label>
 				<div class="uk-form-controls">
-					<textarea v-model="summary" rows="4" name="summary" placeholder="摘要" class="uk-width-1-1" style="resize:none;"></textarea>
+					<input v-model="tim" name="tim" type="text" placeholder="举办时间" class="uk-width-1-1">
+				</div>
+			</div>
+			<div class="uk-form-row">
+				<label class="uk-form-label">地点:</label>
+				<div class="uk-form-controls">
+					<input v-model="place" name="place" type="text" placeholder="地点" class="uk-width-1-1">
+				</div>
+			</div>
+			<div class="uk-form-row">
+				<label class="uk-form-label">网址:</label>
+				<div class="uk-form-controls">
+					<input v-model="url" name="url" type="text" placeholder="网址" class="uk-width-1-1">
 				</div>
 			</div>
 			<div class="uk-form-row">
@@ -94,7 +113,7 @@ $(function () {
 			</div>
 			<div class="uk-form-row">
 				<button type="submit" class="uk-button uk-button-primary"><i class="uk-icon-save"></i> 保存</button>
-				<a href="/manage/blogs" class="uk-button"><i class="uk-icon-times"></i> 取消</a>
+				<a href="/manage/inters" class="uk-button"><i class="uk-icon-times"></i> 取消</a>
 			</div>
 		</form>
 	</div>
